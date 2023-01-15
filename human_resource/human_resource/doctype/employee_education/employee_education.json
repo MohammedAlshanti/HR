@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "EmpEd###",
+ "creation": "2023-01-14 17:48:30.824911",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "degree",
+  "qualification",
+  "level"
+ ],
+ "fields": [
+  {
+   "fieldname": "degree",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Degree",
+   "options": "University\nSchool"
+  },
+  {
+   "fieldname": "qualification",
+   "fieldtype": "Data",
+   "label": "Qualification"
+  },
+  {
+   "fieldname": "level",
+   "fieldtype": "Select",
+   "label": "Level",
+   "options": "Graduated\nUnder Graduated"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-01-14 17:55:09.293782",
+ "modified_by": "Administrator",
+ "module": "Human Resource",
+ "name": "Employee Education",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
