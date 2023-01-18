@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "Employee###",
+ "autoname": "Employee.###",
  "creation": "2023-01-14 17:53:47.820469",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -9,12 +9,12 @@
  "field_order": [
   "personal_information_section",
   "first_name",
-  "middle_nmae",
+  "middle_name",
   "last_name",
-  "column_break_4",
   "full_name",
-  "date_of_birth",
+  "column_break_4",
   "mobile",
+  "date_of_birth",
   "section_break_9",
   "image",
   "employment_information_section",
@@ -33,11 +33,6 @@
    "fieldname": "first_name",
    "fieldtype": "Data",
    "label": "First Name"
-  },
-  {
-   "fieldname": "middle_nmae",
-   "fieldtype": "Data",
-   "label": "Middle Nmae"
   },
   {
    "fieldname": "last_name",
@@ -78,7 +73,7 @@
   {
    "fieldname": "mobile",
    "fieldtype": "Data",
-   "label": "mobile"
+   "label": "Mobile"
   },
   {
    "fieldname": "department",
@@ -128,11 +123,16 @@
    "fieldname": "education_history_section",
    "fieldtype": "Section Break",
    "label": "Education History"
+  },
+  {
+   "fieldname": "middle_name",
+   "fieldtype": "Data",
+   "label": "Middle Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-01-15 18:42:12.957408",
+ "modified": "2023-01-18 22:27:40.711455",
  "modified_by": "Administrator",
  "module": "Human Resource",
  "name": "Employeee",
