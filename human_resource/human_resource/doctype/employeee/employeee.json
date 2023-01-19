@@ -42,7 +42,8 @@
   {
    "fieldname": "full_name",
    "fieldtype": "Data",
-   "label": "Full Name"
+   "label": "Full Name",
+   "read_only": 1
   },
   {
    "fieldname": "image",
@@ -132,7 +133,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-01-18 22:27:40.711455",
+ "modified": "2023-01-19 20:44:49.216154",
  "modified_by": "Administrator",
  "module": "Human Resource",
  "name": "Employeee",
