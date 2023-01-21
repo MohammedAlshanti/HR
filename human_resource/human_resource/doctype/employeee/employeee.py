@@ -16,7 +16,7 @@ class Employeee(Document):
 		self.full_name = self.first_name+" "+self.middle_name+" "+self.last_name
 
 	def validate_education(self):
-		if len(self.emplopyee_education) < 2:
+		if self.emplopyee_education < 2:
 			frappe.throw("required atleast 2 education levels")
 
 
