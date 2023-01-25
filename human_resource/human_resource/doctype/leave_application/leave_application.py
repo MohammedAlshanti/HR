@@ -82,12 +82,13 @@ class LeaveApplication(Document):
 
 
 	def allow_negative_balance(self):
-		check_allow_negative_balance = frappe.db.sql(""" select allow_negative_balance from 'tabLeave Type' WHERE leave_type = %s """,self.leave_type)
-		if check_allow_negative_balance:
-			total_leave_days = date_diff(self.to_date, self.from_date)
-			self.total_leave_days = total_leave_days + 1
-
-
+		try:
+			check_allow_negative_balance = frappe.db.sql("SELECT allow_negative_balance from `tabLeave Type` WHERE `leave_type` = %s", self.leave_type)
+			if check_allow_negative_balance:
+				total_leave_days = date_diff(self.to_date, self.from_date)
+				self.total_leave_days = total_leave_days + 1
+		except Exception as e:
+			frappe.log_error(f"Error in allow_negative_balance: {e}")
 
 	def applicable_after(self):
 		days_applicable_after = frappe.db.sql(""" select applicable_after from 'tabLeave Type' WHERE leave_type = %s """,self.leave_type)
