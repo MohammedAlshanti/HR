@@ -38,7 +38,7 @@ class LeaveApplication(Document):
 
 	def check_balance(self):
 		if self.total_leave_days and self.leave_balance_before_application:
-			if float(self.total_leave_days)> float(self.leave_balance_before_application):
+			if float(self.total_leave_days)> float(self.total_leaves_allocated):
 				frappe.throw(_("your balance not enough for "+self.leave_type))
 
 
@@ -46,22 +46,28 @@ class LeaveApplication(Document):
 		new_balance_allocated = float(self.leave_balance_before_application) - float(self.total_leave_days)
 		leaves_allocated = frappe.db.sql("""UPDATE `tabLeave Allocation` set total_leaves_allocated = %s
 			WHERE employee = %s and leave_type = %s and from_date <= %s and to_date >= %s """,
-			(self.new_balance_allocated,self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
+			(new_balance_allocated,self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
 		frappe.db.commit()
 
 
 	def update_balance_allocation_on_cancel(self):
-		leaves_allocated = frappe.db.sql("""select total_leaves_allocated from `tabLeave Allocation`
-			WHERE employee = %s and leave_type = %s and from_date <= %s and to_date >= %s """,
-			(self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
-		if leaves_allocated:
-			leave_balance_before_application = str(leaves_allocated[0].total_leaves_allocated)
-
-			new_balance_allocated = float(self.leave_balance_before_application) + float(self.total_leave_days)
-			frappe.db.sql("""UPDATE `tabLeave Allocation` set total_leaves_allocated = %s
-			WHERE employee = %s and leave_type = %s and from_date between %s and  %s """,
-			(new_balance_allocated, self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
-			frappe.db.commit()
+		new_balance_allocated = float(self.leave_balance_before_application) + float(self.total_leave_days)
+		leaves_allocated = frappe.db.sql("""UPDATE `tabLeave Allocation` set total_leaves_allocated = %s
+					WHERE employee = %s and leave_type = %s and from_date <= %s and to_date >= %s """,
+										 (new_balance_allocated, self.employee, self.leave_type, self.from_date,
+										  self.to_date), as_dict=1)
+		frappe.db.commit()
+		# leaves_allocated = frappe.db.sql("""select total_leaves_allocated from `tabLeave Allocation`
+		# 	WHERE employee = %s and leave_type = %s and from_date <= %s and to_date >= %s """,
+		# 	(self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
+		# if leaves_allocated:
+		# 	leave_balance_before_application = str(leaves_allocated[0].total_leaves_allocated)
+		#
+		# 	new_balance_allocated = float(self.total_leaves_allocated) + float(self.total_leave_days)
+		# 	frappe.db.sql("""UPDATE `tabLeave Allocation` set total_leaves_allocated = %s
+		# 	WHERE employee = %s and leave_type = %s and from_date between %s and  %s """,
+		# 	(new_balance_allocated, self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
+		# 	frappe.db.commit()
 	
 	
 	def validate_from_date_value_after_to_date_value(self):
@@ -69,15 +75,14 @@ class LeaveApplication(Document):
 			if date_diff(self.to_date,self.from_date)<0:
 				frappe.throw(_("The dates you entered are incorrect"))
 
+	# def check_if_exist_leave_type(self):
+	# 	if self.emplyee and self.leave_type and self.from_date and self.to_date:
+			# frappe.db.sql(""" select leave_type from 'tabLeave Type' WHERE employee = %s and leave_type = %s and from_date = %s and to_date = %s""",(self.em))
 
 	def max_continuous_days(self):
 		if self.employee and self.leave_type and self.from_date and self.to_date:
-
-			max_continuous_days = frappe.db.sql("""select max_continuous_days_allowed from `tabLeave Type`
-			WHERE employee = %s and leave_type = %s and from_date <= %s and to_date >= %s """,
-			(self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
-
-			if float(max_continuous_days) < float(date_diff(self.to_date,self.from_date)):
+			max_continuous_days = frappe.db.sql("""select max_continuous_days_allowed from `tabLeave Type` WHERE employee = %s and leave_type = %s and from_date <= %s and to_date >= %s """,(self.employee, self.leave_type, self.from_date, self.to_date), as_dict=1)
+			if float(max_continuous_days) < float(self.total_leave_days):
 				frappe.throw(_("You cann't select more than"+self.max_continuous_days()))
 
 
