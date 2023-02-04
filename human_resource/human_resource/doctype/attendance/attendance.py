@@ -51,7 +51,7 @@ class Attendance(Document):
 			working_hours = time_diff_in_hours(check_out, check_in)
 		else:
 			check_in = get_time_str(to_timedelta(self.check_in) - timedelta(minutes=settings.late_entry_grace_period))
-			check_out = get_time_str(to_timedelta(self.check_out) + timedelta(minutes=0.0))
+			check_out = get_time_str(to_timedelta(self.check_out) + timedelta(minutes=settings.early_exit_grace_period))
 			working_hours = time_diff_in_hours(check_out, check_in)
 
 
